@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: local
+github:
+  clientId: 2a433252e03305352ce2
+  clientSecret: 2155664999d02d15f1146140914fa08747ca3a31
+---
+
