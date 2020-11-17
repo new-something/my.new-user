@@ -1,4 +1,4 @@
-package com.mynew.auth.user.service.dto;
+package com.mynew.auth.user.service.dto.github;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public final class GithubAccessToken {
-    public static final GithubAccessToken NONE = new GithubAccessToken();
-    private String accessToken;
-    private String scope;
-    private String tokenType;
+public final class Plan {
+    private String name;
+    private Long space;
+    private Integer collaborators;
+    private Integer privateRepos;
 }

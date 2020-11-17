@@ -1,7 +1,8 @@
 package com.mynew.auth.user.service;
 
-import com.mynew.auth.user.service.dto.GithubAccessToken;
-import com.mynew.auth.user.service.dto.GithubUser;
+import com.mynew.auth.user.service.dto.github.GithubAccessToken;
+import com.mynew.auth.user.service.dto.github.GithubUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class GithubService {
     //    로그인 url
     //    https://github.com/login/oauth/authorize?scope=read:user&client_id=2a433252e03305352ce2
@@ -21,11 +23,11 @@ public class GithubService {
     //    특정 user 정보 얻는 url
     //    Authorization: token OAUTH-TOKEN    GET https://api.github.com/user
 
-    private static final WebClient CLIENT = WebClient.builder().build();
+    private final WebClient webClient;
 
     public GithubUser getGithubUser(final String code) {
         String auth = "token " + accessToken(code);
-        GithubUser user = CLIENT.get()
+        GithubUser user = webClient.get()
                 .uri("https://api.github.com/user")
                 .header(HttpHeaders.AUTHORIZATION, auth)
                 .retrieve()
@@ -40,7 +42,7 @@ public class GithubService {
     }
 
     private String accessToken(final String code) {
-        return CLIENT.post()
+        return webClient.post()
                 .uri("https://github.com/login/oauth/access_token")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .body(

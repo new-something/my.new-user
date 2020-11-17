@@ -1,4 +1,4 @@
-package com.mynew.auth.user.service.dto;
+package com.mynew.auth.user.service.dto.github;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

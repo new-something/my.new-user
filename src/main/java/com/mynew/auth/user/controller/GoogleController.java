@@ -1,7 +1,6 @@
 package com.mynew.auth.user.controller;
 
-import com.mynew.auth.user.service.GithubService;
-import com.mynew.auth.user.service.dto.github.GithubUser;
+import com.mynew.auth.user.service.GoogleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-public class GithubController {
+public class GoogleController {
 
-    private final GithubService githubService;
+    private final GoogleService googleService;
 
-    @GetMapping("/users/github")
-    public ResponseEntity<GithubUser> github(
+    @GetMapping("/users/google")
+    public ResponseEntity<String> google(
             @RequestParam String code
-    ) {
+    ){
         log.info(code);
-        GithubUser githubUser = githubService.getGithubUser(code);
-        return ResponseEntity.ok(githubUser);
+        String googleUser = googleService.getGoogleUser(code);
+        return ResponseEntity.ok(googleUser);
     }
 }
-
