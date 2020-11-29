@@ -2,16 +2,20 @@ package com.mynew.auth.user.service.dto.github;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.mynew.auth.user.domain.User;
+import com.mynew.auth.user.service.dto.Persistent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public final class GithubUser {
+public final class GithubUser implements Persistent {
     public static final GithubUser NONE = new GithubUser();
 
     private String login;
@@ -53,4 +57,14 @@ public final class GithubUser {
     private Integer collaborators;
     private boolean twoFactorAuthentication;
     private Plan plan;
+
+    @Override
+    public User toUser() {
+        return User.builder()
+                .id(id)
+                .userName(login)
+                .email(email)
+                .name(name)
+                .build();
+    }
 }

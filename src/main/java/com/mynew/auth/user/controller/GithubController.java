@@ -1,7 +1,8 @@
 package com.mynew.auth.user.controller;
 
+import com.mynew.auth.user.controller.dto.LoginCompleteResponse;
 import com.mynew.auth.user.service.GithubService;
-import com.mynew.auth.user.service.dto.github.GithubUser;
+import com.mynew.auth.user.service.dto.github.GithubAccessToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,21 @@ public class GithubController {
 
     private final GithubService githubService;
 
-    @GetMapping("/users/github")
-    public ResponseEntity<GithubUser> github(
+    @GetMapping("/github/access-token")
+    public ResponseEntity<GithubAccessToken> githubAccessToken(
             @RequestParam String code
-    ) {
+    )
+    {
         log.info(code);
-        GithubUser githubUser = githubService.getGithubUser(code);
-        return ResponseEntity.ok(githubUser);
+        return ResponseEntity.ok(githubService.accessToken(code));
+    }
+
+    @GetMapping("/github/login/complete")
+    public ResponseEntity<LoginCompleteResponse> githubLoginComplete(
+            @RequestParam String accessToken
+    ){
+        String jwt = githubService.jwt(accessToken);
+        return ResponseEntity.ok(LoginCompleteResponse.ok(jwt));
     }
 }
 
