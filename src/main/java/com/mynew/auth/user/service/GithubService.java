@@ -1,5 +1,8 @@
 package com.mynew.auth.user.service;
 
+import com.mynew.auth.global.JwtResolver;
+import com.mynew.auth.user.domain.User;
+import com.mynew.auth.user.repository.UserRepository;
 import com.mynew.auth.user.service.dto.github.GithubAccessToken;
 import com.mynew.auth.user.service.dto.github.GithubUser;
 import lombok.RequiredArgsConstructor;
@@ -25,23 +28,9 @@ public class GithubService {
 
     private final WebClient webClient;
 
-    public GithubUser getGithubUser(final String code) {
-        String auth = "token " + accessToken(code);
-        GithubUser user = webClient.get()
-                .uri("https://api.github.com/user")
-                .header(HttpHeaders.AUTHORIZATION, auth)
-                .retrieve()
-                .bodyToMono(GithubUser.class)
-                .flux()
-                .toStream()
-                .findFirst()
-                .orElse(GithubUser.NONE);
+    private final UserRepository userRepository;
 
-        log.info(user);
-        return user;
-    }
-
-    private String accessToken(final String code) {
+    public GithubAccessToken accessToken(final String code) {
         return webClient.post()
                 .uri("https://github.com/login/oauth/access_token")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
@@ -57,6 +46,24 @@ public class GithubService {
                 .flux()
                 .toStream()
                 .findFirst()
-                .orElse(GithubAccessToken.NONE).getAccessToken();
+                .orElse(GithubAccessToken.NONE);
+    }
+
+    public String jwt(String accessToken){
+        String auth = "token " + accessToken;
+        GithubUser githubUser = webClient.get()
+                .uri("https://api.github.com/user")
+                .header(HttpHeaders.AUTHORIZATION, auth)
+                .retrieve()
+                .bodyToMono(GithubUser.class)
+                .flux()
+                .toStream()
+                .findFirst()
+                .orElse(GithubUser.NONE);
+
+        log.info(githubUser);
+        User user = githubUser.toUser();
+        userRepository.save(user);
+        return JwtResolver.createJwt(user.getId(), user.getUserName(), user.getEmail());
     }
 }
