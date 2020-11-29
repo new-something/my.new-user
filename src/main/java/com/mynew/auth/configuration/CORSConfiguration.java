@@ -15,6 +15,7 @@ public class CORSConfiguration {
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://my.new.s3-website.ap-northeast-2.amazonaws.com");
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
