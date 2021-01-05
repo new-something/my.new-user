@@ -11,14 +11,15 @@ import javax.persistence.Table;
 @ToString
 @Table(name = "user")
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = "userId")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     public static final User EMPTY = new User();
 
     @Id
-    private Long id;
+    private Long userId;
 
     private String userName;
 

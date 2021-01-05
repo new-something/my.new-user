@@ -7,6 +7,7 @@ import com.mynew.auth.user.service.dto.github.GithubAccessToken;
 import com.mynew.auth.user.service.dto.github.GithubUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class GithubService {
     //    특정 user 정보 얻는 url
     //    Authorization: token OAUTH-TOKEN    GET https://api.github.com/user
 
+    @Value("${github.clientId}")
+    private String clientId;
+
+    @Value("${github.clientSecret}")
+    private String clientSecret;
+
     private final WebClient webClient;
 
     private final UserRepository userRepository;
@@ -35,8 +42,8 @@ public class GithubService {
                 .uri("https://github.com/login/oauth/access_token")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .body(
-                        BodyInserters.fromFormData("client_id", "2a433252e03305352ce2")
-                                .with("client_secret", "2155664999d02d15f1146140914fa08747ca3a31")
+                        BodyInserters.fromFormData("client_id", clientId)
+                                .with("client_secret", clientSecret)
                                 .with("code", code)
                 ).retrieve()
                 .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
@@ -64,6 +71,6 @@ public class GithubService {
         log.info(githubUser);
         User user = githubUser.toUser();
         userRepository.save(user);
-        return JwtResolver.createJwt(user.getId(), user.getUserName(), user.getEmail());
+        return JwtResolver.createJwt(user.getUserId(), user.getUserName(), user.getEmail());
     }
 }

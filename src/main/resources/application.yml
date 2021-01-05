@@ -1,7 +1,12 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+      open-in-view: false
   datasource:
     username: my_new_user
     password: my_new_user
@@ -9,8 +14,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 github:
-  clientId: 2a433252e03305352ce2
-  clientSecret: 2155664999d02d15f1146140914fa08747ca3a31
+  clientId: 6d91f0584d549619c938
+  clientSecret: 1be1156486024de0c78d6d039ec0ff7f111918ef
 google:
   clientId: 737679013674-q9efp32jd44hu4gmetvavqr64d9rj97h.apps.googleusercontent.com
   clientSecret: XBnvqLH9rpK9P2aNkSouUhwY

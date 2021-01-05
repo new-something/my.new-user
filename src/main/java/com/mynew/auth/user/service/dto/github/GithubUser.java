@@ -61,7 +61,7 @@ public final class GithubUser implements Persistent {
     @Override
     public User toUser() {
         return User.builder()
-                .id(id)
+                .userId(id)
                 .userName(login)
                 .email(email)
                 .name(name)

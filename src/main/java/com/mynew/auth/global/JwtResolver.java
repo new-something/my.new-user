@@ -78,7 +78,7 @@ public class JwtResolver {
         String email = claims.get("email", String.class);
 
         return User.builder()
-                .id(id)
+                .userId(id)
                 .userName(nickName)
                 .email(email)
                 .build();
