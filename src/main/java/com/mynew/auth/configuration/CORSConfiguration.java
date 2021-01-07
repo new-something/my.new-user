@@ -15,9 +15,8 @@ public class CORSConfiguration {
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://ec2-54-180-147-192.ap-northeast-2.compute.amazonaws.com");
-        config.addAllowedOrigin("http://my.new.s3-website.ap-northeast-2.amazonaws.com");
-        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin("https://master.d1et269uohw2tu.amplifyapp.com/");
+        config.addAllowedOrigin("http://localhost:4300");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);
