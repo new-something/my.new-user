@@ -17,20 +17,16 @@ public class GithubController {
 
     private final GithubService githubService;
 
-    @GetMapping("/github/access-token")
-    public ResponseEntity<GithubAccessToken> githubAccessToken(
+    @GetMapping("/github/login/complete")
+    public ResponseEntity<LoginCompleteResponse> githubJwt(
             @RequestParam String code
     )
     {
         log.info(code);
-        return ResponseEntity.ok(githubService.accessToken(code));
-    }
+        GithubAccessToken accessToken = githubService.accessToken(code);
+        String jwt = githubService.jwt(accessToken.getAccessToken());
 
-    @GetMapping("/github/login/complete")
-    public ResponseEntity<LoginCompleteResponse> githubLoginComplete(
-            @RequestParam String accessToken
-    ){
-        String jwt = githubService.jwt(accessToken);
+        log.info("github login complete");
         return ResponseEntity.ok(LoginCompleteResponse.ok(jwt));
     }
 }
