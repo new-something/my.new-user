@@ -16,6 +16,7 @@ public class CORSConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://my.new.router.s3-website.ap-northeast-2.amazonaws.com");
+        config.addAllowedOrigin("http://my.new.shortcut.s3-website.ap-northeast-2.amazonaws.com");
         config.addAllowedOrigin("http://localhost:4300");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
