@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AwsHealthController {
 
     @GetMapping("/")
-    public ResponseEntity<Void> ok(){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> ok(){
+        return ResponseEntity.ok("aws health check in my new user api service");
     }
 }
