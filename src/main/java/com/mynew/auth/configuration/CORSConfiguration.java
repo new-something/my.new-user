@@ -17,6 +17,8 @@ public class CORSConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("https://master.dhn6ihoaa5lai.amplifyapp.com");
         config.addAllowedOrigin("https://master.d3qlu0onuv733q.amplifyapp.com");
+        config.addAllowedOrigin("https://shortcut.my.new");
+        config.addAllowedOrigin("https://my.new");
         config.addAllowedOrigin("http://localhost:4300");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
