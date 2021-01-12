@@ -32,7 +32,7 @@ public class GithubController {
 
         log.info("github login complete");
         Cookie cookie = new Cookie("my-new-a", jwt);
-        cookie.setDomain(".my.new");
+        cookie.setDomain("my.new");
         cookie.setSecure(true);
         response.addCookie(cookie);
         return ResponseEntity.ok(LoginCompleteResponse.ok(jwt));
