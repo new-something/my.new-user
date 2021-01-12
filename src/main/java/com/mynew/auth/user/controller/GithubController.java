@@ -34,9 +34,10 @@ public class GithubController {
         Cookie cookie = new Cookie("my-new-a", jwt);
         cookie.setDomain("my.new");
         cookie.setSecure(true);
+        cookie.setHttpOnly(true);
         cookie.setMaxAge(259200);
         response.addCookie(cookie);
+//        response.setHeader("Set-Cookie", "my-new-a="+jwt+"; HttpOnly; SameSite=Lax");
         return ResponseEntity.ok(LoginCompleteResponse.ok(jwt));
     }
 }
-
