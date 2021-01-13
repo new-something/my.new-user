@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +19,7 @@ public class GithubController {
 
     @GetMapping("/github/login/complete")
     public ResponseEntity<LoginCompleteResponse> githubJwt(
-            @RequestParam String code,
-            HttpServletResponse response
+            @RequestParam String code
     )
     {
         log.info(code);
@@ -31,13 +27,6 @@ public class GithubController {
         String jwt = githubService.jwt(accessToken.getAccessToken());
 
         log.info("github login complete");
-        Cookie cookie = new Cookie("my-new-a", jwt);
-        cookie.setDomain("my.new");
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(259200);
-        response.addCookie(cookie);
-//        response.setHeader("Set-Cookie", "my-new-a="+jwt+"; HttpOnly; SameSite=Lax");
         return ResponseEntity.ok(LoginCompleteResponse.ok(jwt));
     }
 }
