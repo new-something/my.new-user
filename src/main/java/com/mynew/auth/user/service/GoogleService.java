@@ -1,7 +1,6 @@
 package com.mynew.auth.user.service;
 
 import com.mynew.auth.user.service.dto.google.GoogleAccessToken;
-import com.mynew.auth.user.service.dto.google.GoogleUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -37,9 +36,32 @@ public class GoogleService {
 
     private final WebClient webClient;
 
-    public String getGoogleUser(final String code) {
-        GoogleAccessToken googleAccessToken = accessToken(code);
 
+    public GoogleAccessToken accessToken(final String code) {
+        GoogleAccessToken googleAccessToken = webClient.post()
+                .uri("https://oauth2.googleapis.com/token")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .body(
+                        BodyInserters.fromFormData("client_secret", "XBnvqLH9rpK9P2aNkSouUhwY")
+                                .with("client_id", "737679013674-q9efp32jd44hu4gmetvavqr64d9rj97h.apps.googleusercontent.com")
+                                .with("grant_type", "authorization_code")
+                                .with("redirect_uri", "https://user.my.new/users/google")
+                                .with("code", code)
+                ).retrieve()
+                .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                .map(RuntimeException::new)
+                ).bodyToMono(GoogleAccessToken.class)
+                .flux()
+                .toStream()
+                .findFirst()
+                .orElse(GoogleAccessToken.NONE);
+        log.info(googleAccessToken);
+
+        return googleAccessToken;
+    }
+
+    public String jwt(GoogleAccessToken googleAccessToken) {
         String auth = googleAccessToken.getTokenType() + " " + googleAccessToken.getAccessToken();
         String result = webClient.get()
                 .uri("https://people.googleapis.com/v1/people/me?personFields="+PERSON_FIELDS)
@@ -57,31 +79,6 @@ public class GoogleService {
         log.info(result);
         return result;
     }
-
-    private GoogleAccessToken accessToken(final String code) {
-        GoogleAccessToken googleAccessToken = webClient.post()
-                .uri("https://oauth2.googleapis.com/token")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .body(
-                        BodyInserters.fromFormData("client_secret", "XBnvqLH9rpK9P2aNkSouUhwY")
-                                .with("client_id", "737679013674-q9efp32jd44hu4gmetvavqr64d9rj97h.apps.googleusercontent.com")
-                                .with("grant_type", "authorization_code")
-                                .with("redirect_uri", "http://localhost:8080/users/google")
-                                .with("code", code)
-                ).retrieve()
-                .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .map(RuntimeException::new)
-                ).bodyToMono(GoogleAccessToken.class)
-                .flux()
-                .toStream()
-                .findFirst()
-                .orElse(GoogleAccessToken.NONE);
-        log.info(googleAccessToken);
-
-        return googleAccessToken;
-    }
-
 }
 
 
