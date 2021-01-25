@@ -45,7 +45,7 @@ public class GoogleService {
                         BodyInserters.fromFormData("client_secret", "XBnvqLH9rpK9P2aNkSouUhwY")
                                 .with("client_id", "737679013674-q9efp32jd44hu4gmetvavqr64d9rj97h.apps.googleusercontent.com")
                                 .with("grant_type", "authorization_code")
-                                .with("redirect_uri", "https://user.my.new/users/google")
+                                .with("redirect_uri", "https://my.new/s/google")
                                 .with("code", code)
                 ).retrieve()
                 .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
