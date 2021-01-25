@@ -29,7 +29,7 @@ public class GoogleService {
 //        include_granted_scopes=true
 
     private static final String PERSON_FIELDS = "addresses,ageRanges,biographies,birthdays," +
-            "calendarUrls,clientData,coverPhotos,emailAddresses,events,emails,externalIds," +
+            "calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds," +
             "genders,imClients,interests,locales,,locations,memberships,metadata,miscKeywords," +
             "names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses," +
             "skills,urls,userDefined";
