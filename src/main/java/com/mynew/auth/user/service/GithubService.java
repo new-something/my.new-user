@@ -69,7 +69,8 @@ public class GithubService {
                 .orElse(GithubUser.NONE);
 
         log.info(githubUser);
-        User user = githubUser.toUser();
+        User user = userRepository.findByProviderId(githubUser.getId())
+                .orElseGet(githubUser::toUser);
         userRepository.save(user);
         return JwtResolver.createJwt(user.getId(), user.getUserName(), user.getEmail());
     }

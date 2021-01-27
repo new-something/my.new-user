@@ -73,7 +73,7 @@ public class GoogleService {
     public String jwt(GoogleAccessToken googleAccessToken) {
         String auth = googleAccessToken.getTokenType() + " " + googleAccessToken.getAccessToken();
         String result = webClient.get()
-                .uri("https://people.googleapis.com/v1/people/me?personFields="+PERSON_FIELDS)
+                .uri("https://people.googleapis.com/v1/people/me?personFields=" + PERSON_FIELDS)
                 .header(HttpHeaders.AUTHORIZATION, auth)
                 .retrieve()
                 .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
@@ -93,10 +93,12 @@ public class GoogleService {
         long id = metadata.get("source").getAsJsonObject().get("id").getAsLong();
         String displayName = metadata.get("displayName").getAsString();
 
-        User user = User.builder()
-                .providerId(id)
-                .name(displayName)
-                .build();
+
+        User user = userRepository.findByProviderId(id)
+                .orElseGet(() -> User.builder()
+                        .providerId(id)
+                        .name(displayName)
+                        .build());
         userRepository.save(user);
 
         return JwtResolver.createJwt(user.getId(), displayName, "");
