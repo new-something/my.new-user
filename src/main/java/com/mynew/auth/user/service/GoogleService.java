@@ -1,5 +1,13 @@
 package com.mynew.auth.user.service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mynew.auth.global.JwtResolver;
+import com.mynew.auth.user.domain.ProviderType;
+import com.mynew.auth.user.domain.User;
+import com.mynew.auth.user.repository.UserRepository;
 import com.mynew.auth.user.service.dto.google.GoogleAccessToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +21,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
+
+    private final UserRepository userRepository;
 
 //    scope
 //    userinfo.email
@@ -77,8 +87,24 @@ public class GoogleService {
                 .orElse("");
 
         log.info(result);
-        return result;
+        JsonElement jsonElement = JsonParser.parseString(result);
+        JsonArray names = jsonElement.getAsJsonObject().getAsJsonArray("names");
+        JsonObject name = names.get(0).getAsJsonObject();
+        JsonObject metadata = name.get("metadata").getAsJsonObject();
+        long id = metadata.get("source").getAsJsonObject().get("id").getAsLong();
+        String displayName = metadata.get("displayName").getAsString();
+
+        User user = User.builder()
+                .userId(id)
+                .type(ProviderType.GOOGLE)
+                .name(displayName)
+                .build();
+        userRepository.save(user);
+
+        return JwtResolver.createJwt(id, displayName, "");
     }
+
+
 }
 
 

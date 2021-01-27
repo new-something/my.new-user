@@ -2,9 +2,7 @@ package com.mynew.auth.user.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -20,6 +18,10 @@ public class User {
 
     @Id
     private Long userId;
+
+    @Id
+    @Enumerated(EnumType.STRING)
+    private ProviderType type;
 
     private String userName;
 
