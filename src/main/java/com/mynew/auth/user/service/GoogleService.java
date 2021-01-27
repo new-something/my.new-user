@@ -90,7 +90,7 @@ public class GoogleService {
         JsonArray names = jsonElement.getAsJsonObject().getAsJsonArray("names");
         JsonObject name = names.get(0).getAsJsonObject();
         JsonObject metadata = name.get("metadata").getAsJsonObject();
-        long id = metadata.get("source").getAsJsonObject().get("id").getAsLong();
+        String id = metadata.get("source").getAsJsonObject().get("id").getAsString();
         String displayName = metadata.get("displayName").getAsString();
 
 

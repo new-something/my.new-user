@@ -22,7 +22,7 @@ public class User {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    private Long providerId;
+    private String providerId;
 
     private String userName;
 

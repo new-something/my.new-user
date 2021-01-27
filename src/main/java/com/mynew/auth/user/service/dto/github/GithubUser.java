@@ -19,7 +19,7 @@ public final class GithubUser implements Persistent {
     public static final GithubUser NONE = new GithubUser();
 
     private String login;
-    private Long id;
+    private String id;
     private String nodeId;
     private String avatarUrl;
     @Deprecated
