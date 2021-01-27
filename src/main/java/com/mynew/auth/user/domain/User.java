@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @ToString
-@Table(name = "user", indexes = @Index(name = "provider_id_index", columnList = "providerId"))
+@Table(name = "user", indexes = @Index(name = "provider_id_index", columnList = "providerId", unique = true))
 @Builder
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
