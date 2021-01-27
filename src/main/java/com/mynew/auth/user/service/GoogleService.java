@@ -91,7 +91,7 @@ public class GoogleService {
         JsonObject name = names.get(0).getAsJsonObject();
         JsonObject metadata = name.get("metadata").getAsJsonObject();
         String id = metadata.get("source").getAsJsonObject().get("id").getAsString();
-        String displayName = metadata.get("displayName").getAsString();
+        String displayName = name.get("displayName").getAsString();
 
 
         User user = userRepository.findByProviderId(id)
