@@ -2,7 +2,6 @@ package com.mynew.auth.user.service.dto.github;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.mynew.auth.user.domain.ProviderType;
 import com.mynew.auth.user.domain.User;
 import com.mynew.auth.user.service.dto.Persistent;
 import lombok.AccessLevel;
@@ -62,8 +61,7 @@ public final class GithubUser implements Persistent {
     @Override
     public User toUser() {
         return User.builder()
-                .userId(id)
-                .type(ProviderType.GITHUB)
+                .providerId(id)
                 .userName(login)
                 .email(email)
                 .name(name)

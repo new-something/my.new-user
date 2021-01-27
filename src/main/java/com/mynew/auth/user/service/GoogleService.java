@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mynew.auth.global.JwtResolver;
-import com.mynew.auth.user.domain.ProviderType;
 import com.mynew.auth.user.domain.User;
 import com.mynew.auth.user.repository.UserRepository;
 import com.mynew.auth.user.service.dto.google.GoogleAccessToken;
@@ -95,16 +94,13 @@ public class GoogleService {
         String displayName = metadata.get("displayName").getAsString();
 
         User user = User.builder()
-                .userId(id)
-                .type(ProviderType.GOOGLE)
+                .providerId(id)
                 .name(displayName)
                 .build();
         userRepository.save(user);
 
-        return JwtResolver.createJwt(id, displayName, "");
+        return JwtResolver.createJwt(user.getId(), displayName, "");
     }
-
-
 }
 
 

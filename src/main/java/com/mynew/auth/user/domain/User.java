@@ -1,15 +1,16 @@
 package com.mynew.auth.user.domain;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @ToString
-@Table(name = "user")
+@Table(name = "user", indexes = @Index(name = "provider_id_index", columnList = "providerId"))
 @Builder
-@EqualsAndHashCode(of = "userId")
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -17,11 +18,11 @@ public class User {
     public static final User EMPTY = new User();
 
     @Id
-    private Long userId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
-    @Id
-    @Enumerated(EnumType.STRING)
-    private ProviderType type;
+    private Long providerId;
 
     private String userName;
 

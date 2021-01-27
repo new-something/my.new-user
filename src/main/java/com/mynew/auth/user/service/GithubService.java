@@ -71,6 +71,6 @@ public class GithubService {
         log.info(githubUser);
         User user = githubUser.toUser();
         userRepository.save(user);
-        return JwtResolver.createJwt(user.getUserId(), user.getUserName(), user.getEmail());
+        return JwtResolver.createJwt(user.getId(), user.getUserName(), user.getEmail());
     }
 }
