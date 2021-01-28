@@ -98,6 +98,7 @@ public class GoogleService {
                 .orElseGet(() -> User.builder()
                         .providerId(id)
                         .name(displayName)
+                        .userName(displayName)
                         .build());
         userRepository.save(user);
 
