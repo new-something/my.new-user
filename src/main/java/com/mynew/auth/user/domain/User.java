@@ -10,10 +10,10 @@ import javax.persistence.*;
 @ToString
 @Table(name = "user", indexes = @Index(name = "provider_id_index", columnList = "providerId", unique = true))
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity{
 
     public static final User EMPTY = new User();
 
