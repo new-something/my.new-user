@@ -6,7 +6,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-      open-in-view: false
+    open-in-view: false
   datasource:
     username: my_new_user
     password: my_new_user
